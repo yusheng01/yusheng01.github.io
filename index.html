@@ -64,6 +64,61 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-代码审计" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="article-date">
+  <time datetime="2022-08-27T09:26:30.000Z" itemprop="datePublished">2022-08-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>又是长见识的一道题buu的[网鼎杯 2020 朱雀组]phpweb，打开靶场，发现了/var/www/html/index.php这串代码，那就添加到url上，发现有个页面一闪而过，burp抓包</p>
+<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/4ccf26a02b0c4c07b02ffe9d276a7017.png" alt="img"></p>
+<p>发现有post了两个参数func和p，不知道他们有什么联系，就用<strong>md5</strong>来试试</p>
+<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180202860.png" alt="image-20220827180202860"></p>
+<p>在回显的页面上发现了md5（123）的值，所以可以确定是func（p）这样的形式，那就用<strong>file_get_contents或者highlight_flie来读取下index.php</strong></p>
+<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180645656.png" alt="image-20220827180645656"></p>
+<p>回显了这么一串代码，审计一下，发现可以利用test类反序列化来使页面返回想要的结果，那就试试反序列化</p>
+<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180805131.png" alt="image-20220827180805131"></p>
+<p>得到返回结果</p>
+<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/d4b1b39dbf394072a5e5f7dcc0a39b29.png" alt="在这里插入图片描述"></p>
+<p>那就直接<strong>system(“find / -name flag”)：查找所有文件名匹配flag的文件</strong></p>
+<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180930400.png" alt="image-20220827180930400"></p>
+<p>得到以下返回结果</p>
+<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/c7d1fbbd647f41fcbc34aa065f13bf85.png" alt="在这里插入图片描述"></p>
+<p>最后再cat tmp/flag。。。就得到flag了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" data-id="cl7bqsygn0000ew0qhsim7zvk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-文件包含1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/" class="article-date">
@@ -257,7 +312,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a></li></ul>
     </div>
   </div>
 
@@ -283,6 +338,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计1</a>
+          </li>
         
           <li>
             <a href="/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/">文件包含1</a>
