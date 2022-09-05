@@ -5,11 +5,11 @@
   
 
   
-  <title>Archives: 2022/8 | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2022/08/index.html">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
@@ -64,152 +64,53 @@
       <div class="outer">
         <section id="main">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/08/30/xxe%E4%B9%8Bxml%E5%AD%A6%E4%B9%A0/" class="archive-article-date">
-  <time datetime="2022-08-30T13:34:31.000Z" itemprop="datePublished">Aug 30</time>
+    <article id="post-http" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/25/http/" class="article-date">
+  <time datetime="2022-08-25T07:58:14.000Z" itemprop="datePublished">2022-08-25</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/http/">http</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/30/xxe%E4%B9%8Bxml%E5%AD%A6%E4%B9%A0/">xxe之xml学习</a>
+      <a class="article-title" href="/2022/08/25/http/">http请求报文首部</a>
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/08/28/unserialize1/" class="archive-article-date">
-  <time datetime="2022-08-28T14:39:16.000Z" itemprop="datePublished">Aug 28</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/28/unserialize1/">unserialize1</a>
-    </h1>
-  
+        <p>首先先打开buu的http<br>打开环境，没发现东西，那就浏览源码，搜索php，发现了Secret.php，那就在url上打开<br>页面上显示不是从<a target="_blank" rel="noopener" href="https://sycsecret.buuoj.cn打开的,那就抓包,在请求报文首部添加字段/">https://Sycsecret.buuoj.cn打开的，那就抓包，在请求报文首部添加字段</a><br>Referer：(服务器伪造)<a target="_blank" rel="noopener" href="https://sycsecret.buuoj.cn/">https://Sycsecret.buuoj.cn</a><br>然后页面显示要用Syclover browser，所以要伪造浏览器，就把User-Agent的浏览器字符改成Syclover browser<br>然后页面显示读取这个需要本地读取，所以再添加字段X-Forwarded-For:(用于修改ip),将其值改为127.0.0.1<br>最后发送页面，得到了flag</p>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="archive-article-date">
-  <time datetime="2022-08-27T09:26:30.000Z" itemprop="datePublished">Aug 27</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计1</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/" class="archive-article-date">
-  <time datetime="2022-08-26T15:12:27.000Z" itemprop="datePublished">Aug 26</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/08/25/http/" data-id="cl7gcvvon0000ks0qcfkbduff" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/">文件包含1</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/08/25/upload/" class="archive-article-date">
-  <time datetime="2022-08-25T13:59:02.000Z" itemprop="datePublished">Aug 25</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/25/upload/">upload</a>
-    </h1>
-  
-
-    </header>
+    </footer>
   </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/08/25/hello-world/" class="archive-article-date">
-  <time datetime="2022-08-25T13:26:09.540Z" itemprop="datePublished">Aug 25</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/25/hello-world/">Hello World</a>
-    </h1>
+
+
   
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/08/25/http/" class="archive-article-date">
-  <time datetime="2022-08-25T07:58:14.000Z" itemprop="datePublished">Aug 25</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/25/http/">http请求报文首部</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 </section>
         

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>js学习笔记（一） | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[TOC] 一：浏览器执行js过程浏览器本身不会执行js代码，通过内置JavaScript引擎（解释器）来解释，引擎解释代码时逐行解释，将每一句源码转换成机器语言，再由计算机执行过后，再解释下一句。所以js语言被归为脚本语言 二：初识js1). js组成的三部分1.ECMAScript（js语法）                     基础 2.DOM（页面文档对象模型）：通过dom提供的api">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js学习笔记（一）">
+<meta property="og:url" content="http://example.com/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC] 一：浏览器执行js过程浏览器本身不会执行js代码，通过内置JavaScript引擎（解释器）来解释，引擎解释代码时逐行解释，将每一句源码转换成机器语言，再由计算机执行过后，再解释下一句。所以js语言被归为脚本语言 二：初识js1). js组成的三部分1.ECMAScript（js语法）                     基础 2.DOM（页面文档对象模型）：通过dom提供的api">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-09-04T01:46:46.000Z">
+<meta property="article:modified_time" content="2022-09-05T06:18:43.959Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-js学习笔记（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" class="article-date">
+  <time datetime="2022-09-04T01:46:46.000Z" itemprop="datePublished">2022-09-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/js/">js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      js学习笔记（一）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<h3 id="一：浏览器执行js过程"><a href="#一：浏览器执行js过程" class="headerlink" title="一：浏览器执行js过程"></a>一：浏览器执行js过程</h3><p>浏览器本身不会执行js代码，通过内置JavaScript引擎（解释器）来解释，引擎解释代码时逐行解释，将每一句源码转换成机器语言，再由计算机执行过后，再解释下一句。所以js语言被归为脚本语言</p>
+<h3 id="二：初识js"><a href="#二：初识js" class="headerlink" title="二：初识js"></a>二：初识js</h3><h4 id="1-js组成的三部分"><a href="#1-js组成的三部分" class="headerlink" title="1). js组成的三部分"></a>1). js组成的三部分</h4><p>1.ECMAScript（js语法）                     基础</p>
+<p>2.DOM（页面文档对象模型）：通过dom提供的api操作页面内的各种元素                                    拓展</p>
+<p>3.BOM（浏览器对象模型）：通过bom可以操作浏览器串口，比如弹出框，获取分辨率               拓展</p>
+<h4 id="2-js的书写位置"><a href="#2-js的书写位置" class="headerlink" title="2). js的书写位置"></a>2). js的书写位置</h4><p>1.行内</p>
+<p>可以将单行或少量js代码写在html标签的时间属性中（on开头的属性，比如onclick）</p>
+<p>特殊情况使用</p>
+<p>2.内嵌</p>
+<p>3.外部</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>js学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 2.内嵌式的js--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(<span class="string">&#x27;1111&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 3.外部式js--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;1111.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--1.行内式的js 直接写到元素内部--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;唐伯虎&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;alert(&#x27;秋香&#x27;)&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-注释"><a href="#3-注释" class="headerlink" title="3). 注释"></a>3). 注释</h4><p>单行：//</p>
+<p>多行：/*   */</p>
+<h4 id="4-输入输出语句"><a href="#4-输入输出语句" class="headerlink" title="4). 输入输出语句"></a>4). 输入输出语句</h4><p>alert（）：浏览器弹出警示框</p>
+<p>console.log（）：浏览器控制台打印输出信息</p>
+<p>prompt（）：浏览器弹出输入框，用户输入</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>js学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 输入框</span></span></span><br><span class="line"><span class="language-javascript">       <span class="title function_">prompt</span>(<span class="string">&#x27;请输入你的学号&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 弹出警示框，展示给用户</span></span></span><br><span class="line"><span class="language-javascript">       <span class="title function_">alert</span>(<span class="string">&#x27;aaa&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 控制台输出，给程序员测试用</span></span></span><br><span class="line"><span class="language-javascript">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;程序员能看的&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>输入输出的连接符用+，例如</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>js学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> myname = <span class="string">&#x27;旗木卡卡西&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> myage = <span class="string">&#x27;21&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> myemail = <span class="string">&#x27;123&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> myadress = <span class="string">&#x27;火影村&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> mygz = <span class="string">&#x27;3000&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(<span class="string">&#x27;我叫&#x27;</span>+myname+<span class="string">&#x27;，&#x27;</span>+<span class="string">&#x27;我住在&#x27;</span>+myadress+<span class="string">&#x27;，&#x27;</span>+<span class="string">&#x27;我今年&#x27;</span>+myage+<span class="string">&#x27;，&#x27;</span>+<span class="string">&#x27;我的邮箱是&#x27;</span>+myemail+<span class="string">&#x27;，&#x27;</span>+<span class="string">&#x27;我的工资&#x27;</span>+mygz);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-变量类型"><a href="#5-变量类型" class="headerlink" title="5). 变量类型"></a>5). 变量类型</h4><p>js的变量类型只有在程序的运行过程中，根据变量的值来确定</p>
+<p>var：不确定属于那种数据类型，根据后面的值来判断</p>
+<p>number： 在数字面前加0表示八进制，加0x表示16进制</p>
+<p>var num = 010，转换为十进制就是8</p>
+<p>var num = 0x9 转换为十进制就是9</p>
+<p>字符串转义字符</p>
+<p>\开头        \n  换行</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" data-id="cl7oqqg4m00001kdq7y5y4a3t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          xxe漏洞2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">xxe解题三方面</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/unserialize/">unserialize</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/xxe/">xxe</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/">xxe漏洞2</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">js学习笔记（一）</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/">xxe解题三方面</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/03/xxe%E6%BC%8F%E6%B4%9E1/">xxe漏洞1</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/30/xxe%E4%B9%8Bxml%E5%AD%A6%E4%B9%A0/">xxe之xml学习</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

